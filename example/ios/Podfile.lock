@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - mail_launcher (0.0.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - mail_launcher (from `.symlinks/plugins/mail_launcher/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  mail_launcher:
+    :path: ".symlinks/plugins/mail_launcher/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  mail_launcher: 4eef6a99a697677eba753a0ca12aead64d89db46
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.10.1
