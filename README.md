@@ -34,5 +34,5 @@ MailLauncher.launch(
 
 ## Screenshot
 
-<img src="screenshots/screenshot_ios_1.jpg" width="400"/><img src="screenshots/screenshot_android_1.jpg" width="400"/>
+<img src="https://github.com/kodal/mail_launcher/raw/master/screenshots/screenshot_ios_1.jpg" width="400"/><img src="https://github.com/kodal/mail_launcher/raw/master/screenshots/screenshot_android_1.jpg" width="400"/>
 
