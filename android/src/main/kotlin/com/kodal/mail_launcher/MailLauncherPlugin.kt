@@ -40,13 +40,19 @@ class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 }
 
 
-    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) =
-            when (call.method) {
-                "launch" -> launch(call.arguments())
-                else -> {
-                    result.notImplemented()
-                }
+   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+    when (call.method) {
+        "launch" -> {
+            val arguments = call.arguments<Map<String, String>>()
+            if (arguments != null) {
+                launch(arguments)
+            } else {
+                result.error("ARGUMENTS_NULL", "The arguments for 'launch' cannot be null", null)
             }
+        }
+        else -> result.notImplemented()
+    }
+}
 
     override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
         channel.setMethodCallHandler(null)
