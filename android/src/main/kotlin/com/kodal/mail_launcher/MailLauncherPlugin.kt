@@ -2,7 +2,6 @@ package com.kodal.mail_launcher
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -13,7 +12,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-import android.content.Intent // Add this import statement
+import android.content.Intent as AndroidIntent
 
 /** MailLauncherPlugin */
 class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
