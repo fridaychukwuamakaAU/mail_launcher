@@ -15,33 +15,34 @@ import io.flutter.plugin.common.MethodChannel.Result
 
 /** MailLauncherPlugin */
 class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
-    // ... rest of the code remains the same ...
+    /// The MethodChannel that will the communication between Flutter and native Android
+    ///
+    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// when the Flutter Engine is detached from the Activity
+    private lateinit var channel: MethodChannel
+    private lateinit var context: Context
+    private var activity: Activity? = null
 
-    private fun launch(email: Map<String, String>?) {
-        email?.let {
-            val to = it["to"]
-            val subject = it["subject"]
-            val body = it["body"]
-            val dialogTitle = it["dialogTitle"]
-
-            val intent = Intent(Intent.ACTION_SENDTO).apply {
-                data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf(to))
-                putExtra(Intent.EXTRA_SUBJECT, subject)
-                putExtra(Intent.EXTRA_TEXT, body)
-            }
-            activity?.startActivityForResult(Intent.createChooser(intent, dialogTitle), REQUEST_CODE)
-        }
-    }
-
-     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "mail_launcher")
+        context = flutterPluginBinding.applicationContext
         channel.setMethodCallHandler(this)
     }
 
+    private fun launch(email: Map<String, String>) {
+        Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(email["to"]))
+            putExtra(Intent.EXTRA_SUBJECT, email["subject"])
+            putExtra(Intent.EXTRA_TEXT, email["body"])
+            activity?.startActivity(Intent.createChooser(this, email["dialogTitle"]))
+        }
+    }
+
+
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) =
             when (call.method) {
-                "launch" -> launch(call.arguments() as? Map<String, String>)
+                "launch" -> launch(call.arguments())
                 else -> {
                     result.notImplemented()
                 }
