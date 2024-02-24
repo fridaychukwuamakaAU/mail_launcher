@@ -56,7 +56,6 @@ class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
    override fun onAttachedToActivity(activityPluginBinding: ActivityPluginBinding) {
         activity = activityPluginBinding.activity
-        activityPluginBinding.addActivityResultListener(this)
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
@@ -65,7 +64,6 @@ class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
       override fun onReattachedToActivityForConfigChanges(activityPluginBinding: ActivityPluginBinding) {
         activity = activityPluginBinding.activity
-        activityPluginBinding.addActivityResultListener(this)
     }
 
     override fun onDetachedFromActivity() {
