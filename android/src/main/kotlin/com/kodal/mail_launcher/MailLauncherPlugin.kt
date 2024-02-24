@@ -34,6 +34,11 @@ class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         }
     }
 
+     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "mail_launcher")
+        channel.setMethodCallHandler(this)
+    }
+
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) =
             when (call.method) {
                 "launch" -> launch(call.arguments() as? Map<String, String>)
