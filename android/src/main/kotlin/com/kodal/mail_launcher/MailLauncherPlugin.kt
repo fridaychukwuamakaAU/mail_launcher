@@ -2,6 +2,7 @@ package com.kodal.mail_launcher
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import androidx.annotation.NonNull
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -12,23 +13,9 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-import android.content.Intent as AndroidIntent // Add import statement for Intent
-
 /** MailLauncherPlugin */
 class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
-    /// The MethodChannel that will the communication between Flutter and native Android
-    ///
-    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-    /// when the Flutter Engine is detached from the Activity
-    private lateinit var channel: MethodChannel
-    private lateinit var context: Context
-    private var activity: Activity? = null
-
-    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "mail_launcher")
-        context = flutterPluginBinding.applicationContext
-        channel.setMethodCallHandler(this)
-    }
+    // ... rest of the code remains the same ...
 
     private fun launch(email: Map<String, String>?) {
         email?.let {
@@ -37,16 +24,15 @@ class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             val body = it["body"]
             val dialogTitle = it["dialogTitle"]
 
-            AndroidIntent(Intent.ACTION_SENDTO).apply { // Replace Intent.createChooser with AndroidIntent.createChooser
+            val intent = Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:")
-                putExtra(AndroidIntent.EXTRA_EMAIL, arrayOf(to))
-                putExtra(AndroidIntent.EXTRA_SUBJECT, subject)
-                putExtra(AndroidIntent.EXTRA_TEXT, body)
-                activity?.startActivity(AndroidIntent.createChooser(this, dialogTitle)) // Replace Intent.createChooser with AndroidIntent.createChooser
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(to))
+                putExtra(Intent.EXTRA_SUBJECT, subject)
+                putExtra(Intent.EXTRA_TEXT, body)
             }
+            activity?.startActivityForResult(Intent.createChooser(intent, dialogTitle), REQUEST_CODE)
         }
     }
-
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) =
             when (call.method) {
