@@ -29,7 +29,7 @@ class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         channel.setMethodCallHandler(this)
     }
 
-    private fun launch(email: Map<String, String>) {
+    private fun launch(email: Map<String, String>?) {
         Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
             putExtra(Intent.EXTRA_EMAIL, arrayOf(email["to"]))
