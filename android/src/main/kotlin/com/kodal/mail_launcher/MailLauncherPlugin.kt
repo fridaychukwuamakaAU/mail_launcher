@@ -12,7 +12,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
-import android.content.Intent as AndroidIntent
+import android.content.Intent as AndroidIntent // Add import statement for Intent
 
 /** MailLauncherPlugin */
 class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
@@ -37,12 +37,12 @@ class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             val body = it["body"]
             val dialogTitle = it["dialogTitle"]
 
-            Intent(Intent.ACTION_SENDTO).apply {
+            AndroidIntent(Intent.ACTION_SENDTO).apply { // Replace Intent.createChooser with AndroidIntent.createChooser
                 data = Uri.parse("mailto:")
-                putExtra(Intent.EXTRA_EMAIL, arrayOf(to))
-                putExtra(Intent.EXTRA_SUBJECT, subject)
-                putExtra(Intent.EXTRA_TEXT, body)
-                activity?.startActivity(Intent.createChooser(this, dialogTitle))
+                putExtra(AndroidIntent.EXTRA_EMAIL, arrayOf(to))
+                putExtra(AndroidIntent.EXTRA_SUBJECT, subject)
+                putExtra(AndroidIntent.EXTRA_TEXT, body)
+                activity?.startActivity(AndroidIntent.createChooser(this, dialogTitle)) // Replace Intent.createChooser with AndroidIntent.createChooser
             }
         }
     }
