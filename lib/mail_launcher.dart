@@ -12,9 +12,9 @@ class MailLauncher {
     String? dialogTitle,
   }) =>
       _channel.invokeMethod("launch", {
-        "to": to,
-        "subject": subject,
-        "body": body,
-        "dialogTitle": dialogTitle,
+        "to": to ?? "",
+        "subject": subject ?? "",
+        "body": body ?? "",
+        "dialogTitle": dialogTitle ?? "",
       });
 }
