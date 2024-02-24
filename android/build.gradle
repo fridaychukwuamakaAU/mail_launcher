@@ -32,6 +32,7 @@ android {
     }
     defaultConfig {
         minSdkVersion 16
+        namespace "com.kodal.mail_launcher"
     }
 }
 
