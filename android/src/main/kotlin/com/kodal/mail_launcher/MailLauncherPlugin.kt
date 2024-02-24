@@ -13,6 +13,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
+import android.content.Intent // Add this import statement
+
 /** MailLauncherPlugin */
 class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /// The MethodChannel that will the communication between Flutter and native Android
@@ -29,20 +31,27 @@ class MailLauncherPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         channel.setMethodCallHandler(this)
     }
 
-    private fun launch(email: Map<String, String>) {
-        Intent(Intent.ACTION_SENDTO).apply {
-            data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(email["to"]))
-            putExtra(Intent.EXTRA_SUBJECT, email["subject"])
-            putExtra(Intent.EXTRA_TEXT, email["body"])
-            activity?.startActivity(Intent.createChooser(this, email["dialogTitle"]))
+    private fun launch(email: Map<String, String>?) {
+        email?.let {
+            val to = it["to"]
+            val subject = it["subject"]
+            val body = it["body"]
+            val dialogTitle = it["dialogTitle"]
+
+            Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(to))
+                putExtra(Intent.EXTRA_SUBJECT, subject)
+                putExtra(Intent.EXTRA_TEXT, body)
+                activity?.startActivity(Intent.createChooser(this, dialogTitle))
+            }
         }
     }
 
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) =
             when (call.method) {
-                "launch" -> launch(call.arguments())
+                "launch" -> launch(call.arguments() as? Map<String, String>)
                 else -> {
                     result.notImplemented()
                 }
