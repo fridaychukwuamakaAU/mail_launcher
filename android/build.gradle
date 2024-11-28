@@ -25,12 +25,13 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
     defaultConfig {
+        targetSdkVersion 33
         minSdkVersion 16
         namespace "com.kodal.mail_launcher"
     }
